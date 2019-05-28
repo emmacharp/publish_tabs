@@ -41,7 +41,7 @@ Symphony.Language.add({
 			this.new_entry = (env.page === 'new');
 
 			var has_invalid_tabs = false;
-			this.tab_controls = $('<ul class="tabs"></ul>');
+			this.tab_controls = $('<ul class="publishtabs"></ul>');
 
 			var publish_tabs = Symphony.Context.get('publish-tabs');
 
