@@ -40,26 +40,50 @@ ul.publishtabs li.selected {
 	right: 0;
 }
 
-.tab-group {
-	background-color: inherit;
-	display: flex;
-	flex-direction: column;
-	
-	/* Span whole height and compensate for forced spacing */
-	min-height: 100%;
-	margin-top: calc(-1 * var(--standard-outer-rhythm));
-	margin-bottom: calc(-1 * var(--standard-outer-rhythm));
-	padding-top: var(--standard-outer-rhythm);
-	padding-bottom: var(--standard-outer-rhythm);
-	box-sizing: border-box;
+.tab-group:before, 
+.tab-group:after {
+	content: "";
+	display: block;
+	height: 0;
+	margin: auto;
 }
 
 .primary .tab-group {
+	/* Keep parent context for field layout */
+	display: inherit;
+	flex-direction: inherit;
+	
+	/* Span whole height and compensate for forced spacing */
+	min-height: 100%;
+	margin-left: calc(-1 * var(--standard-outer-rhythm));
+	margin-right: calc(-1 * var(--standard-outer-rhythm));
+	padding: var(--standard-outer-rhythm);
+	box-sizing: border-box;
+	border-bottom: 1px solid var(--color-ui);
+	border-top: 1px solid var(--color-ui);
+}
+
+/* Give a "stacking panels" visual feeling */
+.primary .tab-group {
+	background-color: inherit;
 	position: sticky;
-	bottom: -25%;
+	bottom: -75%;
+	top: -75%;
 }
 
 .primary .tab-group-active {
 	z-index: 1;
 	bottom: auto;
+	top: auto;
+	box-shadow: var(--shadow), var(--shadow-up);
+}
+
+.primary .tab-group:not(.tab-group-active) {
+
+}
+
+
+/* Make the sidebar tabs behave */
+.secondary .tab-group:not(.tab-group-active) {
+	display: none;
 }

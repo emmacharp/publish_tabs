@@ -17,24 +17,30 @@ Symphony.Language.add({
 	var options = {
 	  root: $('.primary').this,
 	  rootMargin: '0px',
-	  threshold: 1.0
+	  threshold: [0.5, 1]
 	};
 
-	function callback(entries, observer) {
+	function activateTabGroups(entries, observer) {
 		$(entries).each(function() {
 			if (this.intersectionRatio >= 1) {
 				// console.log("Fully visible!");
 				var selector = this.target.getAttribute('id');
-				console.log(selector);
+				// console.log(selector);
 				$('.publishtabs').find('[href="#' + selector + '"]').click();
-			} else {
-			// console.log("Not fully visible!");
+				console.log('1', this.target, this);
+
+			} else if (this.isIntersecting == false && this.intersectionRatio <= .5) {
+				$(this.target).removeClass('tab-group-active');
+				console.log('.25', this.target);
+
+			} else if (this.isIntersecting == true && this.intersectionRatio >= .5) {
+				$(this.target).addClass('tab-group-active');
+				console.log('.75', this.target);
 			}
-			
 		});
 	}
 
-	var observer = new IntersectionObserver(callback, options);
+	var observer = new IntersectionObserver(activateTabGroups, options);
 
 	var localStorage = window.localStorage || {};
 
@@ -83,7 +89,7 @@ Symphony.Language.add({
 				var $sidebar_fields = $(sidebar_fields);
 
 				$main_fields.wrapAll('<div id="tab-group-' + publish_tabs[i]['tab_id'] + '" class="tab-group tab-group-' + publish_tabs[i]['tab_id'] + '"></div>');
-				$sidebar_fields.wrapAll('<div id="tab-group-' + publish_tabs[i]['tab_id'] + '" class="tab-group tab-group-' + publish_tabs[i]['tab_id'] + '"></div>');
+				$sidebar_fields.wrapAll('<div class="tab-group tab-group-' + publish_tabs[i]['tab_id'] + '"></div>');
 
 				var tab_field = $('#field-' + publish_tabs[i]['tab_id']).remove();
 				var tab_text = (tab_field.text() != '') ? tab_field.text() : Symphony.Language.get('Untitled Tab');
@@ -105,6 +111,8 @@ Symphony.Language.add({
 						}
 					}
 
+					console.log('click', id);
+
 					window.location.hash = '#' + t.attr('href').split('#')[1];
 				});
 
@@ -119,9 +127,20 @@ Symphony.Language.add({
 			// prepend tags controls
 			context.prepend(this.tab_controls);
 
+			// Start IntersectionObserver on groups
+			var tab_groups = $('.tab-group');
+			tab_groups.each(function(){
+				observer.observe(this);
+			});
+
 			// activate the right tab
 			if (has_invalid_tabs) {
 				this.tab_controls.find('.invalid').first().click();
+			} else if (window.location.hash.indexOf('tab-group') == 1) {
+				var group_id = window.location.hash.split('group-')[1];
+				var selector = '[data-id="'+group_id+'"]';
+				this.tab_controls.find(selector).click();
+				$('.primary').scrollTop( $('#tab-group-'+group_id+'').position().top ); 
 			} else {
 				var initial_tab = self.getURLParameter('publish-tab');
 				var local_tab = self.getLocalTab('publish-tab');
@@ -130,11 +149,6 @@ Symphony.Language.add({
 				this.tab_controls.find(selector).click();
 			}
 
-			// Start IntersectionObserver on groups
-			var tab_groups = $('.tab-group');
-			tab_groups.each(function(){
-				observer.observe(this);
-			});
 		},
 
 		showTab: function(tab) {
