@@ -1,37 +1,3 @@
-/*.tab-group {
-	position: absolute;
-	top: -99999em;
-	left: -99999em;
-	width: 100%;
-}
-
-.tab-group-selected {
-	position: static;
-}
-
-ul.publishtabs {
-	width: 100%;
-	margin: 0;
-	order: -1;
-}
-
-ul.publishtabs li {
-	display: inline-block;
-	color: var(--color-main);
-	font-weight: 500;
-	font-size: var(--text-current);
-	margin-right: var(--spacing-smaller);
-	cursor: pointer;
-	user-select: none;
-	border-bottom: 2px solid transparent;
-}
-
-ul.publishtabs li.selected {
-	color: var(--color-accent);
-	border-bottom: 2px solid var(--color-accent);
-}
-*/
-
 .publishtabs {
 	margin-left: auto;
 	margin-right: auto;
@@ -61,25 +27,6 @@ ul.publishtabs li.selected {
 	box-sizing: border-box;
 	border-bottom: 1px solid var(--color-ui);
 	border-top: 1px solid var(--color-ui);
-}
-
-/* Give a "stacking panels" visual feeling */
-.primary .tab-group {
-	background-color: inherit;
-	position: sticky;
-	bottom: -75%;
-	top: -75%;
-}
-
-.primary .tab-group-active {
-	z-index: 1;
-	bottom: auto;
-	top: auto;
-	box-shadow: var(--shadow), var(--shadow-up);
-}
-
-.primary .tab-group:not(.tab-group-active) {
-
 }
 
 

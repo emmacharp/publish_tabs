@@ -14,33 +14,39 @@ Symphony.Language.add({
 	'use strict';
 
 
-	var options = {
-	  root: $('.primary').this,
-	  rootMargin: '0px',
-	  threshold: [0.5, 1]
-	};
+
+	var observerRoot = document.querySelector('.primary');
 
 	function activateTabGroups(entries, observer) {
 		$(entries).each(function() {
-			if (this.intersectionRatio >= 1) {
-				// console.log("Fully visible!");
+			if (this.intersectionRatio >= observer.thresholds[0]) {
 				var selector = this.target.getAttribute('id');
-				// console.log(selector);
 				$('.publishtabs').find('[href="#' + selector + '"]').click();
-				console.log('1', this.target, this);
-
-			} else if (this.isIntersecting == false && this.intersectionRatio <= .5) {
-				$(this.target).removeClass('tab-group-active');
-				console.log('.25', this.target);
-
-			} else if (this.isIntersecting == true && this.intersectionRatio >= .5) {
-				$(this.target).addClass('tab-group-active');
-				console.log('.75', this.target);
 			}
 		});
 	}
 
-	var observer = new IntersectionObserver(activateTabGroups, options);
+	// Start IntersectionObserver on groups
+
+	$(window).on('load', function(){
+		var tab_groups = $('.primary .tab-group');
+		tab_groups.each(function(){
+
+			var observerOptions = {
+				root: observerRoot,
+				rootMargin: '0px',
+				threshold: []
+			};
+
+			var filled = $(observerRoot).innerHeight() / $(this).outerHeight() * .92;
+			
+			observerOptions.threshold.push(filled);
+
+			var observer = new IntersectionObserver(activateTabGroups, observerOptions);
+
+			observer.observe(this);
+		});
+	});
 
 	var localStorage = window.localStorage || {};
 
@@ -111,9 +117,7 @@ Symphony.Language.add({
 						}
 					}
 
-					console.log('click', id);
-
-					window.location.hash = '#' + t.attr('href').split('#')[1];
+					// window.location.hash = '#' + t.attr('href').split('#')[1];
 				});
 
 				// find invalid fields
@@ -127,11 +131,8 @@ Symphony.Language.add({
 			// prepend tags controls
 			context.prepend(this.tab_controls);
 
-			// Start IntersectionObserver on groups
-			var tab_groups = $('.tab-group');
-			tab_groups.each(function(){
-				observer.observe(this);
-			});
+
+
 
 			// activate the right tab
 			if (has_invalid_tabs) {
