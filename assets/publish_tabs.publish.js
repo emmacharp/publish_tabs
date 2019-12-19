@@ -15,7 +15,7 @@ Symphony.Language.add({
 
 
 
-	var observerRoot = document.querySelector('.primary');
+	var observerRoot = document.querySelector('#primary');
 
 	function activateTabGroups(entries, observer) {
 		$(entries).each(function() {
@@ -29,7 +29,7 @@ Symphony.Language.add({
 	// Start IntersectionObserver on groups
 
 	$(window).on('load', function(){
-		var tab_groups = $('.primary .tab-group');
+		var tab_groups = $('#primary .tab-group');
 		tab_groups.each(function(){
 
 			var observerOptions = {
@@ -141,7 +141,7 @@ Symphony.Language.add({
 				var group_id = window.location.hash.split('group-')[1];
 				var selector = '[data-id="'+group_id+'"]';
 				this.tab_controls.find(selector).click();
-				$('.primary').scrollTop( $('#tab-group-'+group_id+'').position().top ); 
+				$('#primary').scrollTop( $('#tab-group-'+group_id+'').position().top ); 
 			} else {
 				var initial_tab = self.getURLParameter('publish-tab');
 				var local_tab = self.getLocalTab('publish-tab');

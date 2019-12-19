@@ -14,7 +14,7 @@
 	margin: auto;
 }
 
-.primary .tab-group {
+[id="primary"] .tab-group {
 	/* Keep parent context for field layout */
 	display: inherit;
 	flex-direction: inherit;
@@ -25,12 +25,14 @@
 	margin-right: calc(-1 * var(--standard-outer-rhythm));
 	padding: var(--standard-outer-rhythm);
 	box-sizing: border-box;
-	border-bottom: 1px solid var(--color-ui);
+}
+
+[id="primary"] .tab-group+.tab-group {
 	border-top: 1px solid var(--color-ui);
 }
 
 
 /* Make the sidebar tabs behave */
-.secondary .tab-group:not(.tab-group-active) {
+[id="secondary"] .tab-group:not(.tab-group-active) {
 	display: none;
 }
