@@ -47,8 +47,8 @@
 			// only proceed on New or Edit publish pages
 			if ($page instanceof contentPublish and in_array($context['page'], array('new', 'edit'))) {
 
-				$page->addStylesheetToHead(URL . '/extensions/publish_tabs/assets/publish_tabs.publish.css', 'screen', 9001);
-				$page->addScriptToBody(URL . '/extensions/publish_tabs/assets/publish_tabs.publish.js', 9002);
+				$page->addStylesheetToBody(URL . '/extensions/publish_tabs/assets/publish_tabs.publish.css', 'screen', 1);
+				$page->addScriptToBody(URL . '/extensions/publish_tabs/assets/publish_tabs.publish.js', 1);
 
 				include_once(TOOLKIT . '/class.sectionmanager.php');
 
