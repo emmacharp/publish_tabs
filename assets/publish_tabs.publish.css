@@ -23,16 +23,54 @@
 	min-height: 100%;
 	margin-left: calc(-1 * var(--standard-outer-rhythm));
 	margin-right: calc(-1 * var(--standard-outer-rhythm));
-	padding: var(--standard-outer-rhythm);
 	box-sizing: border-box;
 }
 
 [id="primary"] .tab-group+.tab-group {
 	border-top: 1px solid var(--color-ui);
+	margin-top: calc(var(--standard-outer-rhythm) * 2);
 }
 
 
 /* Make the sidebar tabs behave */
 [id="secondary"] .tab-group:not(.tab-group-active) {
 	display: none;
+}
+
+/* No JS styles for minimizing interface jank --------*/
+.field-publish_tabs {
+	color: transparent;
+	font-size: 0;
+	line-height: 0;
+	background-color: transparent;
+	border: 0;
+}
+
+[id="primary"] .field-publish_tabs:not(:first-of-type) {
+	border-top: 1px solid var(--color-ui);
+}
+
+.field-publish_tabs:not(:first-of-type):before {
+	content: "";
+	background-color: var(--standard-field-background-color);
+	width: 100%;
+	position: absolute;
+	margin-top: calc(-1 * var(--standard-outer-rhythm) - var(--radius-current) / 3);
+	border-bottom-left-radius: var(--radius-current);
+	border-bottom-right-radius: var(--radius-current);
+	height: var(--radius-current);
+	border-bottom: 1px solid var(--standard-field-border-color);
+	border-left: 1px solid var(--standard-field-border-color);
+	border-right: 1px solid var(--standard-field-border-color);
+	box-sizing: border-box;
+}
+
+.field-publish_tabs+.field {
+	border-top-left-radius: var(--radius-current);
+	border-top-right-radius: var(--radius-current);
+}
+
+.field:focus-within+.field-publish_tabs:before,
+.field:focus-within+.field-publish_tabs:before {
+	background-color: var(--standard-field-focus-background-color);
 }
