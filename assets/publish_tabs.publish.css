@@ -1,9 +1,17 @@
-.publishtabs {
+[id="context"] .publishtabs {
 	margin-left: auto;
-	margin-right: auto;
-	max-width: var(--dimension-smallest);
-	left: 0;
 	right: 0;
+	left: auto;
+}
+
+@media screen and (min-width: 1240px) {
+	[id="context"] .publishtabs {
+		margin-left: auto;
+		margin-right: auto;
+		max-width: var(--dimension-smallest);
+		left: 0;
+		right: 0;
+	}
 }
 
 .tab-group:before, 
@@ -18,23 +26,31 @@
 	/* Keep parent context for field layout */
 	display: inherit;
 	flex-direction: inherit;
-	
-	/* Span whole height and compensate for forced spacing */
-	min-height: 100%;
-	margin-left: calc(-1 * var(--standard-outer-rhythm));
-	margin-right: calc(-1 * var(--standard-outer-rhythm));
-	box-sizing: border-box;
 }
 
-[id="primary"] .tab-group+.tab-group {
-	border-top: 1px solid var(--color-ui);
-	margin-top: calc(var(--standard-outer-rhythm) * 2);
+.tab-group+.tab-group,
+.field-publish_tabs~.field-publish_tabs {
+	margin-top: var(--standard-outer-rhythm);
 }
 
 
 /* Make the sidebar tabs behave */
+[id="secondary"] .tab-group:not(.tab-group-active):not(:hover):not(:focus-within) {
+	transition-delay: var(--duration-long);
+	transition-duration: var(--duration-longest);
+	opacity: .2;
+}
+
 [id="secondary"] .tab-group:not(.tab-group-active) {
-	display: none;
+	transition-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+	transition-duration: var(--duration-shorter);
+	transition-delay: var(--duration-shorter);
+}
+
+/* Specifically position context-panel-switch arrow when publish tabs are present --------*/
+body.publish-tabs .context-panel-switch:before {
+	width: 100%;
+	max-width: calc(var(--standard-field-max-width) + var(--standard-outer-rhythm) * 2);
 }
 
 /* No JS styles for minimizing interface jank --------*/
@@ -44,10 +60,6 @@
 	line-height: 0;
 	background-color: transparent;
 	border: 0;
-}
-
-[id="primary"] .field-publish_tabs:not(:first-of-type) {
-	border-top: 1px solid var(--color-ui);
 }
 
 .field-publish_tabs:not(:first-of-type):before {
