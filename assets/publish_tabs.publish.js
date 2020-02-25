@@ -22,6 +22,11 @@ Symphony.Language.add({
 			if (this.intersectionRatio >= observer.thresholds[0]) {
 				var selector = this.target.getAttribute('id');
 				$('.publishtabs').find('[href="#' + selector + '"]').click();
+			} else {
+				if($(this.target).hasClass('tab-group-active')) {
+					var selector = $(this.target).prev('.tab-group').attr('id');
+					$('.publishtabs').find('[href="#' + selector + '"]').click();
+				}
 			}
 		});
 	}
@@ -35,12 +40,8 @@ Symphony.Language.add({
 			var observerOptions = {
 				root: observerRoot,
 				rootMargin: '0px',
-				threshold: []
+				threshold: [.1]
 			};
-
-			var filled = $(observerRoot).innerHeight() / $(this).outerHeight() * .92;
-			
-			observerOptions.threshold.push(filled);
 
 			var observer = new IntersectionObserver(activateTabGroups, observerOptions);
 
@@ -91,11 +92,16 @@ Symphony.Language.add({
 				main_fields = main_fields.replace(/, $/,'');
 				sidebar_fields = sidebar_fields.replace(/, $/,'');
 
+				var $sidebar = Symphony.Elements.secondary;
+
 				var $main_fields = $(main_fields);
 				var $sidebar_fields = $(sidebar_fields);
+				var tab_wrapper = $('<div class="tab-group tab-group-' + publish_tabs[i]['tab_id'] + '"></div>');
 
-				$main_fields.wrapAll('<div id="tab-group-' + publish_tabs[i]['tab_id'] + '" class="tab-group tab-group-' + publish_tabs[i]['tab_id'] + '"></div>');
-				$sidebar_fields.wrapAll('<div class="tab-group tab-group-' + publish_tabs[i]['tab_id'] + '"></div>');
+				$main_fields.wrapAll(tab_wrapper);
+				$sidebar_fields.wrapAll(tab_wrapper);
+
+				Symphony.Elements.contents.find('.tab-group-' + publish_tabs[i]['tab_id']).first().attr('id', 'tab-group-' + publish_tabs[i]['tab_id']);
 
 				var tab_field = $('#field-' + publish_tabs[i]['tab_id']).remove();
 				var tab_text = (tab_field.text() != '') ? tab_field.text() : Symphony.Language.get('Untitled Tab');
@@ -104,20 +110,23 @@ Symphony.Language.add({
 				tab_item.append(tab_button);
 				this.tab_controls.append(tab_item);
 
+
 				// add click event to tab
 				tab_button.on('click', function (e) {
 					var t = $(this);
 					var id = t.attr('data-id');
-					if (t.hasClass('active')) return;
+					if (t.closest('li').hasClass('active')) return;
 					if (!!id) {
 						self.showTab(id);
 						// if it's a real user click
 						if (!!e.originalEvent) {
 							self.saveLocalTab('publish-tab', id);
 						}
+						if (!!$sidebar.children('.tab-group-' + id).length) {
+							var tab_group = $sidebar.children('.tab-group-' + id);
+							$sidebar.scrollTop(tab_group.offset().top);
+						}
 					}
-
-					// window.location.hash = '#' + t.attr('href').split('#')[1];
 				});
 
 				// find invalid fields
